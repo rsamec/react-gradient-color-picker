@@ -39,7 +39,7 @@ class ReactGradientColorPicker extends React.Component {
     // TODO: not sure this is correct to generate random ID
     this.containerID = _.uniqueId('gc-canvas_');
 
-    // init canvas instance 
+    // init canvas instance
     this.svg = null;
 
     // receive stops from props
@@ -77,10 +77,7 @@ class ReactGradientColorPicker extends React.Component {
   	newStops.sort(CompareOffset);
   	this.setState({stops: newStops});
 
-  	// notify change
-  	if (this.props.onChange) {
-  		this.props.onChange(this.colorScale);	
-  	}
+    this.notifyChange();
   }
 
   dragHandler(d, mouseX, colorPickerID) {
@@ -100,12 +97,14 @@ class ReactGradientColorPicker extends React.Component {
   	currentHandler.x = d.x;
     this.setState({stops: newStops});
 
-    // notify change
-    if (this.props.onChange) {
-  		this.props.onChange(this.colorScale);	
-  	}
+    this.notifyChange();
   }
 
+  notifyChange() {
+    if (this.props.onChange) {
+      this.props.onChange(_.map(this.state.stops,function(x){return _.pick(x,['offset','color'])}));
+    }
+  }
   componentDidMount() {
   	// try to get the auto-expanded comonent width
 
@@ -260,10 +259,7 @@ class ReactGradientColorPicker extends React.Component {
 	  	currentHandler.color = color;
 	    this.setState({stops: newStops});
 
-	    // notify change
-	    if (this.props.onChange) {
-	  		this.props.onChange(this.colorScale);	
-	  	}
+	    this.notifyChange();
   	}.bind(this);
   	var colorpickers = this.state.stops.map(function iterator(s) {
   		let pickerId = ColorPickerID(this.containerID, s.idx);

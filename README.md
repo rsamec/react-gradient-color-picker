@@ -34,7 +34,7 @@ The color stops of the color map.
 ### onChange {func}
 
 Callback called on every value change.
-The return value is a d3 linear color scale. Input value range is between 0 to 1. 
+The return value is a stops {array} - see Properties above. 
 It only triggers when the stop color changes or end of dragging the handlers.
 
 ### width {number}
